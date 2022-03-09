@@ -1481,6 +1481,18 @@ namespace Covid19Radar.Resources {
             }
         }
         
+        public static string HowToEnableExposureNotificationsPageTitle {
+            get {
+                return ResourceManager.GetString("HowToEnableExposureNotificationsPageTitle", resourceCulture);
+            }
+        }
+        
+        public static string HowToEnableExposureNotificationsPageDescription1 {
+            get {
+                return ResourceManager.GetString("HowToEnableExposureNotificationsPageDescription1", resourceCulture);
+            }
+        }
+        
         public static string HowToReceiveProcessingNumberPageTitle {
             get {
                 return ResourceManager.GetString("HowToReceiveProcessingNumberPageTitle", resourceCulture);

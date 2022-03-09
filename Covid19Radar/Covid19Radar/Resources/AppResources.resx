@@ -1065,6 +1065,16 @@ However, if you have any symptoms, please consider receiving a consultation..
     <value>https://www.mhlw.go.jp/cocoa/kiyaku_english.html</value>
     <comment>利用規約URL</comment>
   </data>
+  <data name="HowToEnableExposureNotificationsPageTitle" xml:space="preserve">
+    <value>接触通知を有効にするには</value>
+    <comment>接触通知を有効にするには</comment>
+  </data>
+  <data name="HowToEnableExposureNotificationsPageDescription1" xml:space="preserve">
+    <value>COCOA（※）を利用するには、スマートフォンの接触通知設定をオンにする必要があります。
+以下のボタンをタップして設定画面を開き、手順に従って接触通知を有効にしてください。</value>
+    <comment>COCOA（※）を利用するには、スマートフォンの接触通知設定をオンにする必要があります。
+以下のボタンをタップして設定画面を開き、手順に従って接触通知を有効にしてください。</comment>
+  </data>
   <data name="HowToReceiveProcessingNumberPageTitle" xml:space="preserve">
     <value>Get processing number</value>
     <comment>処理番号の取得方法</comment>
