@@ -28,8 +28,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Package Add coverlet.msbuild
-      run: dotnet add ${{ github.workspace }}/Covid19Radar/Covid19Radar.iOS/Covid19Radar.iOS.csproj package coverlet.msbuild
     - name: Setup Xamarin
       uses: maxim-lobanov/setup-xamarin@v1
       with:
@@ -53,8 +51,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Package Add coverlet.msbuild
-      run: dotnet add ${{ github.workspace }}/Covid19Radar/Covid19Radar.iOS/Covid19Radar.Android.csproj package coverlet.msbuild
     - name: Prepare settings.json
       run: mv -Force ${{ github.workspace }}/Covid19Radar/Covid19Radar/settings_template.json ${{ github.workspace }}/Covid19Radar/Covid19Radar/settings.json
     - name: Deploy nuget packages - ${{ matrix.Configuration }}
