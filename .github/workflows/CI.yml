@@ -28,6 +28,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Package Add coverlet.msbuild
+      run: dotnet add ${{ github.workspace }}/Covid19Radar/Covid19Radar.iOS/Covid19Radar.iOS.csproj package coverlet.msbuild
     - name: Setup Xamarin
       uses: maxim-lobanov/setup-xamarin@v1
       with:
@@ -51,6 +53,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Package Add coverlet.msbuild
+      run: dotnet add ${{ github.workspace }}/Covid19Radar/Covid19Radar.iOS/Covid19Radar.Android.csproj package coverlet.msbuild
     - name: Prepare settings.json
       run: mv -Force ${{ github.workspace }}/Covid19Radar/Covid19Radar/settings_template.json ${{ github.workspace }}/Covid19Radar/Covid19Radar/settings.json
     - name: Deploy nuget packages - ${{ matrix.Configuration }}
@@ -64,8 +68,34 @@ jobs:
     runs-on: macos-latest # Tests must be executed on macOs. If don't, tests will fail.
     needs: [build_ios, build_android]
     steps:
+    - name: Set up JDK 11
+      if: ${{ matrix.Configuration == 'Release' }}
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.11
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Cache SonarCloud packages
+      if: ${{ matrix.Configuration == 'Release' }}
+      uses: actions/cache@v1
+      with:
+        path: ~/sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+    - name: Cache SonarCloud scanner
+      if: ${{ matrix.Configuration == 'Release' }}
+      id: cache-sonar-scanner
+      uses: actions/cache@v1
+      with:
+        path: ./.sonar/scanner
+        key: ${{ runner.os }}-sonar-scanner
+        restore-keys: ${{ runner.os }}-sonar-scanner
+    - name: Install SonarCloud scanner
+      if: ${{ steps.cache-sonar-scanner.outputs.cache-hit != 'true' && matrix.Configuration == 'Release' }}
+      shell: powershell
+      run: |
+        New-Item -Path ./.sonar/scanner -ItemType Directory
+        dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
     - name: Prepare settings.json
       run: mv -f ${{ github.workspace }}/Covid19Radar/Covid19Radar/settings_template.json ${{ github.workspace }}/Covid19Radar/Covid19Radar/settings.json
     - name: Execute Unit Tests
