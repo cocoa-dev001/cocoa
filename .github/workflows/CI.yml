@@ -33,6 +33,8 @@ jobs:
         java-version: 1.11
     - name: Checkout
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Package Add coverlet.msbuild
       run: dotnet add ${{ github.workspace }}/Covid19Radar/Tests/Covid19Radar.UnitTests/Covid19Radar.UnitTests.csproj package coverlet.msbuild
     - name: Cache SonarCloud packages
