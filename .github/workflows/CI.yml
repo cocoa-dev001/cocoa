@@ -34,6 +34,8 @@ jobs:
       uses: actions/checkout@v2
     - name: Package Add coverlet.msbuild
       run: dotnet add ${{ github.workspace }}/Covid19Radar/Tests/Covid19Radar.UnitTests/Covid19Radar.UnitTests.csproj package coverlet.msbuild
+    - name: Package Add coverlet.msbuild
+      run: dotnet add ${{ github.workspace }}/Covid19Radar/Tests/Covid19Radar.UITests/Covid19Radar.UITests.csproj package coverlet.msbuild
     - name: Cache SonarCloud packages
       uses: actions/cache@v1
       with:
