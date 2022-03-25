@@ -27,6 +27,7 @@ jobs:
         Configuration: [Release]
     steps:
     - name: Set up JDK 11
+      if: ${{ matrix.Configuration == 'Release' }}
       uses: actions/setup-java@v1
       with:
         java-version: 1.11
@@ -34,15 +35,15 @@ jobs:
       uses: actions/checkout@v2
     - name: Package Add coverlet.msbuild
       run: dotnet add ${{ github.workspace }}/Covid19Radar/Tests/Covid19Radar.UnitTests/Covid19Radar.UnitTests.csproj package coverlet.msbuild
-    - name: Package Add coverlet.msbuild
-      run: dotnet add ${{ github.workspace }}/Covid19Radar/Tests/Covid19Radar.UITest/Covid19Radar.UITest.csproj package coverlet.msbuild
     - name: Cache SonarCloud packages
+      if: ${{ matrix.Configuration == 'Release' }}
       uses: actions/cache@v1
       with:
         path: ~/sonar/cache
         key: ${{ runner.os }}-sonar
         restore-keys: ${{ runner.os }}-sonar
     - name: Cache SonarCloud scanner
+      if: ${{ matrix.Configuration == 'Release' }}
       id: cache-sonar-scanner
       uses: actions/cache@v1
       with:
@@ -56,6 +57,7 @@ jobs:
         New-Item -Path ./.sonar/scanner -ItemType Directory
         dotnet tool update dotnet-sonarscanner --tool-path ./.sonar/scanner
     - name: Begin SonarScanner
+      if: ${{ matrix.Configuration == 'Release' }}
       run: ./.sonar/scanner/dotnet-sonarscanner begin /k:"cocoa-mhlw_cocoa-app" /o:"cocoa-mhlw" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/coverage.opencover.xml"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -75,10 +77,12 @@ jobs:
     - name: Build Project - ${{ matrix.Configuration }}
       run: msbuild ${{ github.workspace }}/Covid19Radar.sln /restore /t:Build /p:Configuration=${{ matrix.Configuration }} /p:Platform=iPhoneSimulator
     - name: Execute Unit Tests
+      if: ${{ matrix.Configuration == 'Release' }}
       run: dotnet test ${{ github.workspace }}/Covid19Radar/Tests/Covid19Radar.UnitTests/ /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --collect:"XPlat Code Coverage"
       env:
         DOTNET_CLI_TELEMETRY_OPTOUT: true
     - name: End SonarScanner
+      if: ${{ matrix.Configuration == 'Release' }}
       run: ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
